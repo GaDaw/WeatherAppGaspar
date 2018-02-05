@@ -7,6 +7,7 @@
 <h2>Create</h2>
 
 <h4>User</h4>
+<button onclick="geoFindMe()">Get Location</button><br>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -41,17 +42,7 @@
                 <label asp-for="Longitude" class="control-label"></label>
                 <input asp-for="Longitude" class="form-control" />
                 <span asp-validation-for="Longitude" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Meteorology" class="control-label"></label>
-                <input asp-for="Meteorology" class="form-control" />
-                <span asp-validation-for="Meteorology" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Forecast" class="control-label"></label>
-                <input asp-for="Forecast" class="form-control" />
-                <span asp-validation-for="Forecast" class="text-danger"></span>
-            </div>
+            </div>            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
@@ -64,5 +55,32 @@
 </div>
 
 @section Scripts {
+    <script type="text/javascript">
+
+        function geoFindMe() {
+
+
+            if (!navigator.geolocation) {
+                alert("Tu navegador no tiene soporte para geolocalizacion, debes introducir las coordenadas manualemnte");
+                return;
+            }
+
+
+            function success(position) {
+                var Lat = document.getElementById("Latitude");
+                var Lon = document.getElementById("Longitude");
+
+                Lat.value = position.coords.latitude;
+
+                Lon.value = position.coords.longitude;
+
+            }
+            function error() {
+                alert("Unable to retrieve your location");
+            };
+            navigator.geolocation.getCurrentPosition(success, error);
+
+        }
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
