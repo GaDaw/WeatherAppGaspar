@@ -76,6 +76,11 @@ namespace WeatherAppGaspar.Controllers
 
                 }
 
+                // Creamos una url a nuestra Api Forecast (que toma datos de OpenWeather) para mostrar la Prediccion para el usuario
+                var urlforecast = ("https://localhost:44335/api/forecast/coordinates/" + user.Latitude + "/" + user.Longitude);
+                user.Forecast = urlforecast;
+
+
                 // Hasheamos la contraseña dada antes de guardarla
                 string password = user.Password;
                 byte[] salt = new byte[128 / 8];

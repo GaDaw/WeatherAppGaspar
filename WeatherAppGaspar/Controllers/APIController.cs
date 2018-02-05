@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WeatherAppGaspar.Data;
 using WeatherAppGaspar.Models;
 
 namespace WeatherAppGaspar.Controllers
 {
     [Produces("application/json")]
-    [Route("/API")]
+    [Route("API")]
     public class APIController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -49,4 +51,5 @@ namespace WeatherAppGaspar.Controllers
             return Ok(userWeather);
         }
     }
+    
 }
