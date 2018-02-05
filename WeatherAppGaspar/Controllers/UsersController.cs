@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -74,6 +76,22 @@ namespace WeatherAppGaspar.Controllers
 
                 }
 
+                // Hasheamos la contraseña dada antes de guardarla
+                string password = user.Password;
+                byte[] salt = new byte[128 / 8];
+                using (var rng = RandomNumberGenerator.Create())
+                {
+                    rng.GetBytes(salt);
+                }
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+                user.Password = hashed;
+
+                // Guardamos el usuario
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -125,6 +143,21 @@ namespace WeatherAppGaspar.Controllers
                         user.Meteorology = ("Ciudad: " + rawWeather.Name + "  Temperatura: " + rawWeather.Main.Temp + "  Presión: " + rawWeather.Main.Pressure + "  Humidity: " + rawWeather.Main.Humidity);
 
                     }
+
+                    // Hasheamos la contraseña dada antes de guardarla
+                    string password = user.Password;
+                    byte[] salt = new byte[128 / 8];
+                    using (var rng = RandomNumberGenerator.Create())
+                    {
+                        rng.GetBytes(salt);
+                    }
+                    string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: password,
+                    salt: salt,
+                    prf: KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 10000,
+                    numBytesRequested: 256 / 8));
+                    user.Password = hashed;
 
                     _context.Update(user);
                     await _context.SaveChangesAsync();
