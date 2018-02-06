@@ -19,7 +19,8 @@ Contenido:
  Comenzando:
  
  Este proyecto fue desarrollado y probado de manera local. Se puede testear con Microsoft Visual Studio y IIS Express.
- Tenga especial cuidad con el puerto en su Localhost ya que puede varias respecto al del proyecto.
+ Tenga especial cuidad con el puerto en su Localhost ya que puede varias respecto al del proyecto y algunas direcciones
+ podrían no funcionar.
  
  
  
